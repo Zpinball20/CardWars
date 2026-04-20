@@ -1,13 +1,15 @@
+import { Player } from "./player"
+
 export class GameState {
   turn: number;
   currentPlayer: number;
-  numPlayers: number;
+  players: Player[]
   winner: number | null;
 
-  constructor(numPlayers: number = 2) {
+  constructor() {
     this.turn = 0;
     this.currentPlayer = 0;
-    this.numPlayers = numPlayers;
+    this.players = [];
     this.winner = null;
   }
 
