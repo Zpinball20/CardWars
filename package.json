@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "playroomkit": "^0.0.96"
+    "playroomkit": "^0.0.96",
+    "typescript": "^6.0.3"
   }
 }
