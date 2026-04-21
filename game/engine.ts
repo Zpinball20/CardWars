@@ -1,6 +1,13 @@
 import { GameState } from "./state";
 import { Action, ActionType } from "./actions";
 import { CardType, Card } from "./card";
+import {Player} from "./player";
+
+export function addPlayer(state: GameState, player: Player): GameState {
+  state.players.push(player);
+
+  return state;
+}
 
 export function applyAction(state: GameState, action: Action): GameState {
   switch (action.type) {
