@@ -38,23 +38,23 @@ function endTurn(state: GameState, player: number): GameState {
 
 //Playing a card
 function playCard(state: GameState, player: number, card: Card): GameState {
-  if(player != state.currentPlayer){
-    throw new Error("Not your turn");
-  }
-
-  //search for card in player's hand
-  const currPlayer = state.players[player]
-  const index = currPlayer.hand.findIndex(c => c.id === card.id);
-    if (index === -1) {
-      throw new Error("Card not in hand");
+    if(player != state.currentPlayer){
+      throw new Error("Not your turn");
     }
 
-  const selectedCard = currPlayer.hand[index]
+    //search for card in player's hand
+    const currPlayer = state.players[player]
+    const index = currPlayer.hand.findIndex(c => c.id === card.id);
+      if (index === -1) {
+        throw new Error("Card not in hand");
+      }
 
-  currPlayer.lanes[0].card[0] = selectedCard
-  
-  //remove card from hand after playing 
-  currPlayer.hand.splice(index, 1);
+    const selectedCard = currPlayer.hand[index]
+
+    currPlayer.lanes[0].card[0] = selectedCard
+    
+    //remove card from hand after playing 
+    currPlayer.hand.splice(index, 1);
 
     //TODO Card Logic
     if(card.type == CardType.CREATURE){
@@ -73,5 +73,5 @@ function playCard(state: GameState, player: number, card: Card): GameState {
       throw new Error("Card type is invalid")
     }
 
-  return state;
+    return state;
 }
