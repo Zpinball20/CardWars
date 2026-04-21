@@ -1,6 +1,7 @@
 import { Hero } from "../game/hero";
 import { LandscapeType } from "../game/landscapes";
 import { CARDS } from "./cards";
+import { Card } from "../game/card"
 
 export const HEROES: Hero[] = [
     new Hero(
@@ -26,7 +27,7 @@ export const HEROES: Hero[] = [
             LandscapeType.CORNFIELDS
         ],
         "",
-        [CARDS[2]] // The Pig
+        [CARDS[2], CARDS[2]] // The Pig
     ),
 ];
 
