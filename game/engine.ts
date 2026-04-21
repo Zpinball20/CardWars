@@ -43,9 +43,8 @@ function playCard(state: GameState, player: number, card: Card): GameState {
     }
 
   const selectedCard = currPlayer.hand[index]
-  
 
-  //remove card from hand after playing
+  //remove card from hand after playing 
   currPlayer.hand.splice(index, 1);
 
     //TODO Card Logic
