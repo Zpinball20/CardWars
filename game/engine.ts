@@ -51,6 +51,8 @@ function playCard(state: GameState, player: number, card: Card): GameState {
 
   const selectedCard = currPlayer.hand[index]
 
+  currPlayer.lanes[0].card[0] = selectedCard
+  
   //remove card from hand after playing 
   currPlayer.hand.splice(index, 1);
 
