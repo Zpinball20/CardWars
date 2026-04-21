@@ -2,6 +2,7 @@ import { GameState } from "./state";
 import { Action, ActionType } from "./actions";
 import { CardType, Card } from "./card";
 import { Player } from "./player";
+import { Landscape } from "./landscapes";
 
 export function addPlayer(state: GameState, player: Player): GameState {
   state.players.push(player);
@@ -24,21 +25,62 @@ export function applyAction(state: GameState, action: Action): GameState {
   }
 }
 
-function attack(state: GameState, player: number): GameState {
+function getOpposingPlayer(state: GameState, player: number, laneIndex: number): number {
+  const numPlayers = state.players.length;
+
+  if (laneIndex === 0 || laneIndex === 1) {
+    // next player (wrap around)
+    return (player + 1) % numPlayers;
+  }
+
+  if (laneIndex === 2 || laneIndex === 3) {
+    // previous player (wrap around)
+    return (player - 1 + numPlayers) % numPlayers;
+  }
+
+  throw new Error("Invalid lane index");
+}
+
+export function attack(state: GameState, player: number): GameState {
   if (player !== state.currentPlayer) {
     throw new Error("Not your turn");
   }
 
-  const currPlayer = state.players[player]
+  const currPlayer = state.players[player];
 
-  for(let i = 0; i < currPlayer.landscapes.length; i++){
-    if(currPlayer.landscapes[i].card[0]){
-      //attack logic
+  for (let i = 0; i < currPlayer.landscapes.length; i++) {
+    const attackingLandscape = currPlayer.landscapes[i];
+    const attacker = attackingLandscape.card[0];
+
+    if (!attacker) continue;
+
+    const opponentIndex = getOpposingPlayer(state, player, i);
+    const opponent = state.players[opponentIndex];
+
+    const opposingLaneIndex = 3 - i;
+    const defendingLandscape = opponent.landscapes[opposingLaneIndex];
+    const defender = defendingLandscape.card[0];
+
+    if (defender) {
+      // Creature vs Creature
+      attacker.health! -= defender.attack!;
+      defender.health! -= attacker.attack!;
+    } else {
+      // Direct Damage
+      opponent.health -= attacker.attack!;
+    }
+
+    // Cleanup
+    if (attacker.health !== undefined && attacker.health <= 0) {
+      attackingLandscape.card.splice(0, 1);
+    }
+
+    if (defender && defender.health !== undefined && defender.health <= 0) {
+      defendingLandscape.card.splice(0, 1);
     }
   }
 
-
-  return state
+  return state;
 }
 
 //Ending the turn
