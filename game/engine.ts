@@ -17,6 +17,7 @@ export function applyAction(state: GameState, action: Action): GameState {
   }
 }
 
+//Ending the turn
 function endTurn(state: GameState, player: number): GameState {
   if (player !== state.currentPlayer) {
     throw new Error("Not your turn");
@@ -28,6 +29,7 @@ function endTurn(state: GameState, player: number): GameState {
   return state;
 }
 
+//Playing a card
 function playCard(state: GameState, player: number, card: Card): GameState {
   if(player != state.currentPlayer){
     throw new Error("Not your turn");
@@ -39,6 +41,9 @@ function playCard(state: GameState, player: number, card: Card): GameState {
     if (index === -1) {
       throw new Error("Card not in hand");
     }
+
+  //remove card from hand after playing
+  currPlayer.hand.splice(index, 1);
 
     //TODO Card Logic
     if(card.type == CardType.CREATURE){
