@@ -6,20 +6,22 @@ import {LandscapeType} from "./landscapes";
 export class Player {
     health: number;
     hand: Card[];
+    deck: Card[];
     lanes: Lane[];
     hero: Hero;
 
     constructor(){
         this.health = 25;
         this.hand = [];
+        this.deck = [];
         this.lanes = [{
-            flipped: false
+            card: [], flipped: false
         }, {
-            flipped: false
+            card: [], flipped: false
         }, {
-            flipped: false
+            card: [], flipped: false
         }, {
-            flipped: false
+            card: [], flipped: false
         }];
         this.hero = null!;
     }
