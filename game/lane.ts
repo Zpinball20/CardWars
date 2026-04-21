@@ -2,13 +2,12 @@ import {LandscapeType} from "./landscapes";
 import {Card} from "./card";
 
 export class Lane {
-    cards: Card[]; // lane's are just a holder for entities, need support for multiple (gobblin)
-    landscape: LandscapeType;
+    card?: Card[]; // lane's are just a holder for entities, need support for multiple (gobblin)
+    landscape?: LandscapeType;
     flipped: boolean;
 
-    constructor(landscp: LandscapeType){
-        this.cards = [];
-        this.landscape = landscp;
+    constructor(landscape: LandscapeType){
+        this.landscape = landscape;
         this.flipped = false;
     }
 }
