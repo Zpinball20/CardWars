@@ -4,7 +4,7 @@ import { applyAction, addPlayer } from "../game/engine";
 import { ActionType } from "../game/actions";
 import { getCard } from "../db/cards";
 import { Hero } from "../game/hero";
-import { LandscapeType } from "../game/landscapes";
+import { LandscapeType, Landscape } from "../game/landscapes";
 
 describe("Game Lifecycle E2E", () => {
     let state: GameState;
@@ -44,6 +44,7 @@ describe("Game Lifecycle E2E", () => {
 
     //Be able to play a card
     test("should remove a card from hand", () => {
+        //turn 1 (P1)
         applyAction(state, {
             type: ActionType.PLAY_CARD,
             player: 0,
@@ -51,7 +52,7 @@ describe("Game Lifecycle E2E", () => {
         })
 
         expect(state.players[0].hand.length).toBe(3)
-        expect(state.players[0].lanes[0].card[0].id).toBe("cool_dog")
+        expect(state.players[0].landscapes[0].card[0].id).toBe("cool_dog")
 
     });
 

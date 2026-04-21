@@ -1,7 +1,7 @@
 import { GameState } from "./state";
 import { Action, ActionType } from "./actions";
 import { CardType, Card } from "./card";
-import {Player} from "./player";
+import { Player } from "./player";
 
 export function addPlayer(state: GameState, player: Player): GameState {
   state.players.push(player);
@@ -22,6 +22,23 @@ export function applyAction(state: GameState, action: Action): GameState {
     default:
       throw new Error("Unknown action type");
   }
+}
+
+function attack(state: GameState, player: number): GameState {
+  if (player !== state.currentPlayer) {
+    throw new Error("Not your turn");
+  }
+
+  const currPlayer = state.players[player]
+
+  for(let i = 0; i < currPlayer.landscapes.length; i++){
+    if(currPlayer.landscapes[i].card[0]){
+      //attack logic
+    }
+  }
+
+
+  return state
 }
 
 //Ending the turn
@@ -51,7 +68,7 @@ function playCard(state: GameState, player: number, card: Card): GameState {
 
     const selectedCard = currPlayer.hand[index]
 
-    currPlayer.lanes[0].card[0] = selectedCard
+    currPlayer.landscapes[0].card[0] = selectedCard
     
     //remove card from hand after playing 
     currPlayer.hand.splice(index, 1);

@@ -1,4 +1,4 @@
-import {LandscapeType} from "./landscapes";
+/*import {LandscapeType} from "./landscapes";
 import {Card} from "./card";
 
 export class Lane {
@@ -11,4 +11,4 @@ export class Lane {
         this.landscape = landscape;
         this.flipped = false;
     }
-}
+}*/

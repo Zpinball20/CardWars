@@ -1,20 +1,19 @@
 import { Card } from "./card"
-import { Lane } from "./lane";
+import { Landscape, LandscapeType } from "./landscapes";
 import {Hero} from "./hero";
-import {LandscapeType} from "./landscapes";
 
 export class Player {
     health: number;
     hand: Card[];
     deck: Card[];
-    lanes: Lane[];
+    landscapes: Landscape[];
     hero: Hero;
 
     constructor(){
         this.health = 25;
         this.hand = [];
         this.deck = [];
-        this.lanes = [{
+        this.landscapes = [{
             card: [], flipped: false
         }, {
             card: [], flipped: false
@@ -32,8 +31,8 @@ export class Player {
     }
 
     setLandscapeTypes(types: LandscapeType[]) {
-        for (let i = 0; i < this.lanes.length; i++) {
-            this.lanes[i].landscape = types[i];
+        for (let i = 0; i < this.landscapes.length; i++) {
+            this.landscapes[i].landscape = types[i];
         }
     }
 }
