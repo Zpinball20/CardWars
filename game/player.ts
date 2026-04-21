@@ -1,5 +1,5 @@
 import { Card } from "./card"
-import {Lane} from "./lane";
+import { Lane } from "./lane";
 
 export class Player {
     health: number;

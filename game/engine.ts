@@ -42,6 +42,9 @@ function playCard(state: GameState, player: number, card: Card): GameState {
       throw new Error("Card not in hand");
     }
 
+  const selectedCard = currPlayer.hand[index]
+  
+
   //remove card from hand after playing
   currPlayer.hand.splice(index, 1);
 

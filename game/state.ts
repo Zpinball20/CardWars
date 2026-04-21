@@ -3,7 +3,7 @@ import { Player } from "./player"
 export class GameState {
   turn: number;
   currentPlayer: number;
-  players: Player[]
+  players: Player[];
   winner: number | null;
 
   constructor() {
