@@ -2,7 +2,6 @@ import { GameState } from "./state";
 import { Action, ActionType } from "./actions";
 import { CardType, Card } from "./card";
 import { Player } from "./player";
-import { Landscape } from "./landscapes";
 
 export function addPlayer(state: GameState, player: Player): GameState {
   state.players.push(player);
