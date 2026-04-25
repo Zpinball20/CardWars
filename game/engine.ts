@@ -1,7 +1,19 @@
-import { GameState } from "./state";
+import { GameState, turnPhase } from "./state";
 import { Action, ActionType } from "./actions";
 import { CardType, Card } from "./card";
 import { Player } from "./player";
+import * as readline from "readline";
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+function ask(question: string): Promise<string> {
+  return new Promise((resolve) => {
+    rl.question(question, resolve);
+  });
+}
 
 export function addPlayer(state: GameState, player: Player): GameState {
   state.players.push(player);
@@ -11,17 +23,46 @@ export function addPlayer(state: GameState, player: Player): GameState {
 
 export function applyAction(state: GameState, action: Action): GameState {
   switch (action.type) {
-    case ActionType.END_TURN:
-      return endTurn(state, action.player);
+    case ActionType.END_START:
+      return endStartOfTurn(state, action.player);
+
     case ActionType.PLAY_CARD:
-      if (!action.card) {
-      throw new Error("No card provided for PLAY_CARD");
-    }
+      if (!action.card) throw new Error("No card provided");
       return playCard(state, action.player, action.card);
 
+    case ActionType.START_ATTACK:
+      return startAttackPhase(state, action.player);
+
+    case ActionType.ATTACK_LANE:
+      if (action.landscape === undefined) throw new Error("No landscape selected");
+      return attackLane(state, action.player, action.landscape);
+
+    case ActionType.END_TURN:
+      return endTurn(state, action.player);
+
     default:
-      throw new Error("Unknown action type");
+      throw new Error("Unknown action");
   }
+}
+
+function endStartOfTurn(state: GameState, player: number): GameState{
+  if (player !== state.currentPlayer) {
+    throw new Error("Not your turn");
+  }
+  if (state.turnPhase !== turnPhase.TURN_START) throw new Error("Wrong phase");
+
+  state.turnPhase = turnPhase.MAIN_PHASE
+  return state
+}
+
+function startAttackPhase(state: GameState, player: number): GameState{
+  if (player !== state.currentPlayer) {
+    throw new Error("Not your turn");
+  }
+  if (state.turnPhase !== turnPhase.MAIN_PHASE) throw new Error("Wrong phase");
+
+  state.turnPhase = turnPhase.ATTACK_PHASE
+  return state
 }
 
 function getOpposingPlayer(state: GameState, player: number, laneIndex: number): number {
@@ -38,48 +79,6 @@ function getOpposingPlayer(state: GameState, player: number, laneIndex: number):
   }
 
   throw new Error("Invalid lane index");
-}
-
-export function attack(state: GameState, player: number): GameState {
-  if (player !== state.currentPlayer) {
-    throw new Error("Not your turn");
-  }
-
-  const currPlayer = state.players[player];
-
-  for (let i = 0; i < currPlayer.landscapes.length; i++) {
-    const attackingLandscape = currPlayer.landscapes[i];
-    const attacker = attackingLandscape.card[0];
-
-    if (!attacker) continue;
-
-    const opponentIndex = getOpposingPlayer(state, player, i);
-    const opponent = state.players[opponentIndex];
-
-    const opposingLaneIndex = 3 - i;
-    const defendingLandscape = opponent.landscapes[opposingLaneIndex];
-    const defender = defendingLandscape.card[0];
-
-    if (defender) {
-      // Creature vs Creature
-      attacker.health! -= defender.attack!;
-      defender.health! -= attacker.attack!;
-    } else {
-      // Direct Damage
-      opponent.health -= attacker.attack!;
-    }
-
-    // Cleanup
-    if (attacker.health !== undefined && attacker.health <= 0) {
-      attackingLandscape.card.splice(0, 1);
-    }
-
-    if (defender && defender.health !== undefined && defender.health <= 0) {
-      defendingLandscape.card.splice(0, 1);
-    }
-  }
-
-  return state;
 }
 
 //Ending the turn
@@ -99,6 +98,7 @@ function playCard(state: GameState, player: number, card: Card): GameState {
     if(player != state.currentPlayer){
       throw new Error("Not your turn");
     }
+    if (state.turnPhase !== turnPhase.MAIN_PHASE) throw new Error("Wrong phase");
 
     //search for card in player's hand
     const currPlayer = state.players[player]
@@ -132,4 +132,34 @@ function playCard(state: GameState, player: number, card: Card): GameState {
     }
 
     return state;
+}
+
+function attackLane(state: GameState, player: number, lane: number): GameState {
+  if (player !== state.currentPlayer) throw new Error("Not your turn");
+  if (state.turnPhase !== turnPhase.ATTACK_PHASE) throw new Error("Wrong phase");
+
+  const currPlayer = state.players[player];
+  const attacker = currPlayer.landscapes[lane].card[0];
+  if (!attacker) throw new Error("No attacker in lane");
+
+  const opponentIndex = getOpposingPlayer(state, player, lane);
+  const opponent = state.players[opponentIndex];
+
+  const opposingLane = 3 - lane;
+  const defender = opponent.landscapes[opposingLane].card[0];
+
+  if (defender) {
+    attacker.health! -= defender.attack!;
+    defender.health! -= attacker.attack!;
+  } else {
+    opponent.health -= attacker.attack!;
+  }
+
+  // cleanup
+  if (attacker.health! <= 0) currPlayer.landscapes[lane].card.splice(0, 1);
+  if (defender && defender.health! <= 0) {
+    opponent.landscapes[opposingLane].card.splice(0, 1);
+  }
+
+  return state;
 }

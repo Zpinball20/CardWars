@@ -32,6 +32,27 @@ describe("Game Lifecycle E2E", () => {
         addPlayer(state, p2);
     });
 
+    test("should move from TURN_START to MAIN_PHASE", () => {
+        applyAction(state, {
+            type: ActionType.END_START,
+            player: 0
+        });
+
+        expect(state.turnPhase).toBe("MAIN_PHASE");
+    });
+
+    test("should move from MAIN_PHASE to ATTACK_PHASE", () => {
+        // move to main first
+        applyAction(state, { type: ActionType.END_START, player: 0 });
+
+        applyAction(state, {
+            type: ActionType.START_ATTACK,
+            player: 0
+        });
+
+        expect(state.turnPhase).toBe("ATTACK_PHASE");
+    });
+
     test("should take a turn", () => {
         //turn 1 (P1)
         applyAction(state, {
@@ -46,6 +67,11 @@ describe("Game Lifecycle E2E", () => {
     test("should remove a card from hand", () => {
         //turn 1 (P1)
         applyAction(state, {
+            type: ActionType.END_START,
+            player: 0
+        });
+
+        applyAction(state, {
             type: ActionType.PLAY_CARD,
             player: 0,
             card: state.players[0].hand[0]
@@ -54,6 +80,49 @@ describe("Game Lifecycle E2E", () => {
         expect(state.players[0].hand.length).toBe(3)
         expect(state.players[0].landscapes[0].card[0].id).toBe("cool_dog")
 
+    });
+
+    test("should not allow playing a card during TURN_START", () => {
+        expect(() => {
+            applyAction(state, {
+                type: ActionType.PLAY_CARD,
+                player: 0,
+                card: state.players[0].hand[0]
+            });
+        }).toThrow();
+    });
+
+    test("should not allow wrong player to act", () => {
+        expect(() => {
+            applyAction(state, {
+                type: ActionType.END_TURN,
+                player: 1
+            });
+        }).toThrow();
+    });
+
+    test("should deal direct damage if no defender", () => {
+        // setup: move to attack phase
+        applyAction(state, { type: ActionType.END_START, player: 0 });
+
+        // play creature first
+        applyAction(state, {
+            type: ActionType.PLAY_CARD,
+            player: 0,
+            card: state.players[0].hand[0]
+        });
+
+        applyAction(state, { type: ActionType.START_ATTACK, player: 0 });
+
+        const opponentHPBefore = state.players[1].health;
+
+        applyAction(state, {
+            type: ActionType.ATTACK_LANE,
+            player: 0,
+            landscape: 0
+        });
+
+        expect(state.players[1].health).toBeLessThan(opponentHPBefore);
     });
 
     /*test("should run a full game simulation from start to 0 HP victory", () => {
