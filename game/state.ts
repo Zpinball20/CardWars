@@ -1,16 +1,24 @@
 import { Player } from "./player"
 
+export enum turnPhase{
+  TURN_START = "TURN_START",
+  MAIN_PHASE = "MAIN_PHASE",
+  ATTACK_PHASE = "ATTACK_PHASE"
+}
+
 export class GameState {
   turn: number;
   currentPlayer: number;
   players: Player[];
   winner: number | null;
+  turnPhase: turnPhase
 
   constructor() {
     this.turn = 0;
     this.currentPlayer = 0;
     this.players = [];
     this.winner = null;
+    this.turnPhase = turnPhase.TURN_START;
   }
 
   toString(): string {
