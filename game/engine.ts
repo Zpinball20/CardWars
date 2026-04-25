@@ -16,7 +16,8 @@ export function applyAction(state: GameState, action: Action): GameState {
 
     case ActionType.PLAY_CARD:
       if (!action.card) throw new Error("No card provided");
-      return playCard(state, action.player, action.card);
+      if (action.landscape === undefined) throw new Error("No landscape provided");
+      return playCard(state, action.player, action.card, action.landscape);
 
     case ActionType.START_ATTACK:
       return startAttackPhase(state, action.player);
@@ -82,7 +83,7 @@ function endTurn(state: GameState, player: number): GameState {
 }
 
 //Playing a card
-function playCard(state: GameState, player: number, card: Card): GameState {
+function playCard(state: GameState, player: number, card: Card, landscape: number): GameState {
     if(player != state.currentPlayer){
       throw new Error("Not your turn");
     }
@@ -97,7 +98,11 @@ function playCard(state: GameState, player: number, card: Card): GameState {
 
     const selectedCard = currPlayer.hand[index]
 
-    currPlayer.landscapes[0].card[0] = selectedCard
+    if(landscape < 0 || landscape > 3){
+      throw new Error("Landscape does not exist!")
+    }
+    
+    currPlayer.landscapes[landscape].card[0] = selectedCard
     
     //remove card from hand after playing 
     currPlayer.hand.splice(index, 1);
