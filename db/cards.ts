@@ -29,3 +29,7 @@ export const CARDS: Card[] = loadCards();
 export function getCard(id: string): Card | undefined {
     return CARDS.find(card => card.id === id);
 }
+
+export function getCards(): Card[] {
+    return CARDS;
+}
