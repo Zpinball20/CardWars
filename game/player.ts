@@ -14,13 +14,13 @@ export class Player {
         this.hand = [];
         this.deck = [];
         this.landscapes = [{
-            card: [], flipped: false
+            card: [], flipped: false, frozen: false
         }, {
-            card: [], flipped: false
+            card: [], flipped: false, frozen: false
         }, {
-            card: [], flipped: false
+            card: [], flipped: false, frozen: false
         }, {
-            card: [], flipped: false
+            card: [], flipped: false, frozen: false
         }];
         this.hero = null!;
     }

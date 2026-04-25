@@ -14,8 +14,9 @@ export class Card{
     landscape: LandscapeType;
     attack?: number;
     health?: number;
+    exhausted?: boolean;
 
-    constructor(params: {id: string; name: string; cost: number; type: CardType; landscape: LandscapeType; attack?: number; health?: number}){
+    constructor(params: {id: string; name: string; cost: number; type: CardType; landscape: LandscapeType; attack?: number; health?: number, exhausted?: boolean}){
         this.id = params.id;
         this.name = params.name;
         this.cost = params.cost;
@@ -23,5 +24,6 @@ export class Card{
         this.landscape = params.landscape;
         this.attack = params.attack;
         this.health = params.health;
+        this.exhausted = params.exhausted;
     }
 }

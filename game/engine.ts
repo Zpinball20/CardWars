@@ -2,6 +2,7 @@ import { GameState, turnPhase } from "./state";
 import { Action, ActionType } from "./actions";
 import { CardType, Card } from "./card";
 import { Player } from "./player";
+import { truncate } from "fs";
 
 export function addPlayer(state: GameState, player: Player): GameState {
   state.players.push(player);
@@ -79,6 +80,8 @@ function endTurn(state: GameState, player: number): GameState {
   state.currentPlayer = (state.currentPlayer + 1) % state.players.length;
   state.turn += 1;
 
+  state.turnPhase = turnPhase.TURN_START
+
   return state;
 }
 
@@ -133,7 +136,8 @@ function attackLane(state: GameState, player: number, lane: number): GameState {
 
   const currPlayer = state.players[player];
   const attacker = currPlayer.landscapes[lane].card[0];
-  if (!attacker) throw new Error("No attacker in lane");
+  if (!attacker) throw new Error("No card in lane");
+  if (attacker.exhausted == true) throw new Error("Card is exhausted!");
 
   const opponentIndex = getOpposingPlayer(state, player, lane);
   const opponent = state.players[opponentIndex];
@@ -148,8 +152,13 @@ function attackLane(state: GameState, player: number, lane: number): GameState {
     opponent.health -= attacker.attack!;
   }
 
+  attacker.exhausted = true
+
   // cleanup
-  if (attacker.health! <= 0) currPlayer.landscapes[lane].card.splice(0, 1);
+  if (attacker.health! <= 0){
+    currPlayer.landscapes[lane].card.splice(0, 1);
+  }
+  
   if (defender && defender.health! <= 0) {
     opponent.landscapes[opposingLane].card.splice(0, 1);
   }
