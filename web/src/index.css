@@ -1,0 +1,225 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #1a1a2e;
+  color: #eee;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.game-board {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.player-area {
+  background: #16213e;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.player-area.current {
+  border: 2px solid #f39c12;
+}
+
+.hand {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  min-height: 120px;
+}
+
+.card {
+  width: 80px;
+  height: 110px;
+  background-color: transparent;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid #533483;
+}
+
+.card.selected {
+  border-color: #f39c12;
+  box-shadow: 0 0 15px #f39c12;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.card-cost {
+  background: #e94560;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.card-image {
+  flex: 1;
+  background: #533483;
+  border-radius: 4px;
+  margin: 4px 0;
+}
+
+.card-name {
+  font-size: 10px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.card-atk { color: #e74c3c; }
+.card-hp { color: #2ecc71; }
+
+.landscapes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.lane {
+  aspect-ratio: 3/4;
+  background: #0f3460;
+  border-radius: 8px;
+  border: 2px solid #533483;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.lane.flipped {
+  background: #1a1a2e;
+  border-style: dashed;
+}
+
+.lane .card {
+  width: 60px;
+  height: 85px;
+}
+
+.lane .card.exhausted {
+  opacity: 0.6;
+}
+
+.landscape-label {
+  position: absolute;
+  bottom: 5px;
+  font-size: 10px;
+  color: #666;
+}
+
+.hero-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #16213e;
+  border-radius: 12px;
+}
+
+.hero {
+  text-align: center;
+}
+
+.hero-health {
+  font-size: 24px;
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.hero-name {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button.primary {
+  background: #e94560;
+  color: white;
+}
+
+button.primary:hover {
+  background: #c73e54;
+}
+
+button:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+.start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 20px;
+}
+
+.start-screen h1 {
+  font-size: 48px;
+  color: #e94560;
+}
+
+.hero-select {
+  display: flex;
+  gap: 20px;
+}
+
+.hero-select button {
+  padding: 20px 40px;
+  font-size: 18px;
+}
