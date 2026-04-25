@@ -7,5 +7,7 @@
   "attack": 0,
   "health": 0,
   "description": "Target Blue Plains Creature you control has +2 ATK this turn.",
-  "components": []
+  "components": [
+    "spell_component"
+  ]
 }

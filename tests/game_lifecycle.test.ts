@@ -13,7 +13,7 @@ describe("Game Lifecycle E2E", () => {
         state = new GameState();
         
         const p1 = new Player();
-        const h1 = new Hero("finn_id", "Finn", [LandscapeType.BLUE_PLAINS, LandscapeType.BLUE_PLAINS, LandscapeType.BLUE_PLAINS, LandscapeType.BLUE_PLAINS]);
+        const h1 = new Hero("finn", "Finn", [LandscapeType.BLUE_PLAINS, LandscapeType.BLUE_PLAINS, LandscapeType.BLUE_PLAINS, LandscapeType.BLUE_PLAINS]);
         p1.setHero(h1);
         p1.hand.push(getCard("cool_dog")!); // 2 ATK
         p1.hand.push(getCard("ancient_scholar")!); // 1 ATK
@@ -21,7 +21,7 @@ describe("Game Lifecycle E2E", () => {
         p1.hand.push(getCard("ancient_scholar")!); // 1 ATK
         
         const p2 = new Player();
-        const h2 = new Hero("jake_id", "Jake", [LandscapeType.CORNFIELDS, LandscapeType.CORNFIELDS, LandscapeType.CORNFIELDS, LandscapeType.CORNFIELDS]);
+        const h2 = new Hero("jake", "Jake", [LandscapeType.CORNFIELDS, LandscapeType.CORNFIELDS, LandscapeType.CORNFIELDS, LandscapeType.CORNFIELDS]);
         p2.setHero(h2);
         p2.hand.push(getCard("the_pig")!); // 1 ATK
         p2.hand.push(getCard("the_pig")!); // 1 ATK
@@ -74,7 +74,8 @@ describe("Game Lifecycle E2E", () => {
         applyAction(state, {
             type: ActionType.PLAY_CARD,
             player: 0,
-            card: state.players[0].hand[0]
+            card: state.players[0].hand[0],
+            landscape: 0
         })
 
         expect(state.players[0].hand.length).toBe(3)
@@ -87,7 +88,8 @@ describe("Game Lifecycle E2E", () => {
             applyAction(state, {
                 type: ActionType.PLAY_CARD,
                 player: 0,
-                card: state.players[0].hand[0]
+                card: state.players[0].hand[0],
+                landscape: 0
             });
         }).toThrow();
     });
@@ -109,7 +111,8 @@ describe("Game Lifecycle E2E", () => {
         applyAction(state, {
             type: ActionType.PLAY_CARD,
             player: 0,
-            card: state.players[0].hand[0]
+            card: state.players[0].hand[0],
+            landscape: 0
         });
 
         applyAction(state, { type: ActionType.START_ATTACK, player: 0 });

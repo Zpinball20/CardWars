@@ -51,6 +51,6 @@
     "blood_fortress"
   ],
   "components": [
-    "finn_grant_floop_component"
+    { "type": "hero_ability_component", "ability": "grant_floop_if_zero_attack" }
   ]
 }

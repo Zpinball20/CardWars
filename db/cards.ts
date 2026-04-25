@@ -1,35 +1,30 @@
 import { Card, CardType } from "../game/card";
 import { LandscapeType } from "../game/landscapes";
+import * as fs from "fs";
+import * as path from "path";
 
-export const CARDS: Card[] = [
-    new Card({
-        id: "cool_dog",
-        name: "Cool Dog",
-        cost: 2,
-        type: CardType.CREATURE,
-        landscape: LandscapeType.BLUE_PLAINS,
-        attack: 2,
-        health: 7
-    }),
-    new Card({
-        id: "ancient_scholar",
-        name: "Ancient Scholar",
-        cost: 3,
-        type: CardType.CREATURE,
-        landscape: LandscapeType.BLUE_PLAINS,
-        attack: 1,
-        health: 7
-    }),
-    new Card({
-        id: "the_pig",
-        name: "The Pig",
-        cost: 1,
-        type: CardType.CREATURE,
-        landscape: LandscapeType.CORNFIELDS,
-        attack: 1,
-        health: 4
-    }),
-];
+const cardsDir = path.join(process.cwd(), "db", "cards");
+
+function loadCards(): Card[] {
+  if (!fs.existsSync(cardsDir)) return [];
+  
+  const files = fs.readdirSync(cardsDir).filter(f => f.endsWith(".json"));
+  return files.map(file => {
+    const data = JSON.parse(fs.readFileSync(path.join(cardsDir, file), "utf-8"));
+    return new Card({
+      id: data.id,
+      name: data.name,
+      cost: data.cost,
+      type: data.type as CardType,
+      landscape: data.landscape as LandscapeType,
+      attack: data.attack,
+      health: data.health,
+      description: data.description
+    });
+  });
+}
+
+export const CARDS: Card[] = loadCards();
 
 export function getCard(id: string): Card | undefined {
     return CARDS.find(card => card.id === id);

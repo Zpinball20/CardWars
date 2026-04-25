@@ -7,5 +7,11 @@
   "attack": 1,
   "health": 4,
   "description": "FLOOP >>> Flip target facedown Landscape you control face up.",
-  "components": []
+  "components": [
+    "floop_component",
+    {
+      "type": "floop_handler_component",
+      "handler": "flip_facedown"
+    }
+  ]
 }

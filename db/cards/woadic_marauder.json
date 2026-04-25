@@ -7,5 +7,7 @@
   "attack": 3,
   "health": 9,
   "description": "When Woadic Marauder changes Lanes during a turn, draw a card.",
-  "components": []
+  "components": [
+    "lane_change_component"
+  ]
 }

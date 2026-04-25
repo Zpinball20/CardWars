@@ -7,5 +7,11 @@
   "attack": 2,
   "health": 5,
   "description": "FLOOP >>> Put a Spell from your discard pile on top of your deck.",
-  "components": []
+  "components": [
+    "floop_component",
+    {
+      "type": "floop_handler_component",
+      "handler": "spell_from_discard"
+    }
+  ]
 }

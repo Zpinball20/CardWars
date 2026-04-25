@@ -7,5 +7,7 @@
   "attack": 0,
   "health": 0,
   "description": "Each Creature that changed Lanes this turn has +2 ATK.",
-  "components": []
+  "components": [
+    "spell_component"
+  ]
 }

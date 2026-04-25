@@ -7,5 +7,11 @@
   "attack": 1,
   "health": 7,
   "description": "FLOOP >>> Return a random Rainbow card from your discard pile to your hand. If you control a Building in this Lane, gain 1 Action.",
-  "components": []
+  "components": [
+    "floop_component",
+    {
+      "type": "floop_handler_component",
+      "handler": "return_rainbow_discard"
+    }
+  ]
 }

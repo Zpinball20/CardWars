@@ -1,9 +1,9 @@
 import { Card } from "./card";
 
 export enum LandscapeType {
-    BLUE_PLAINS = "BLUE PLAINS",
+    BLUE_PLAINS = "BLUE_PLAINS",
     CORNFIELDS = "CORNFIELDS",
-    USELESS_SWAMP = "USELESS SWAMP",
+    USELESS_SWAMP = "USELESS_SWAMP",
     SANDYLANDS = "SANDYLANDS",
     NICELANDS = "NICELANDS",
     RAINBOW = "RAINBOW",

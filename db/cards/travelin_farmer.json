@@ -7,5 +7,7 @@
   "attack": 2,
   "health": 12,
   "description": "When Travelin' Farmer leaves play, deal 1 damage to your opponent for each card in their hand.",
-  "components": []
+  "components": [
+    "leave_play_trigger_component"
+  ]
 }

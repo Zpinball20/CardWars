@@ -7,5 +7,7 @@
   "attack": 1,
   "health": 10,
   "description": "At the start of your turn, each player draws a card.",
-  "components": []
+  "components": [
+    "turn_start_trigger_component"
+  ]
 }

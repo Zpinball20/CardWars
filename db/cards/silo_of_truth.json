@@ -7,5 +7,7 @@
   "attack": 0,
   "health": 0,
   "description": "Pay 2 Actions >>> Steal a random card from your opponent's hand and play it at no cost.",
-  "components": []
+  "components": [
+    "building_component"
+  ]
 }
