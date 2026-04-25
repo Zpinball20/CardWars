@@ -1,0 +1,11 @@
+{
+  "id": "woadic_chief",
+  "name": "Woadic Chief",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "BLUE_PLAINS",
+  "attack": 2,
+  "health": 10,
+  "description": "+2 ATK for each Spell you have played this turn.",
+  "components": []
+}

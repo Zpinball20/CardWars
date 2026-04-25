@@ -1,0 +1,11 @@
+{
+  "id": "field_of_nightmares",
+  "name": "Field of Nightmares",
+  "cost": 1,
+  "type": "SPELL",
+  "landscape": "CORNFIELD",
+  "attack": 0,
+  "health": 0,
+  "description": "Deal 1 damage to your opponent for each card in their hand.",
+  "components": []
+}

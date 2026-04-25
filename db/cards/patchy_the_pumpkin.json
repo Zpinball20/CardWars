@@ -1,0 +1,11 @@
+{
+  "id": "patchy_the_pumpkin",
+  "name": "Patchy the Pumpkin",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "CORNFIELD",
+  "attack": 0,
+  "health": 5,
+  "description": "FLOOP >>> Deal 1 damage to target Creature. Do this once for each Cornfield Landscape you control. (May only target each Creature once.)",
+  "components": []
+}

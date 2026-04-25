@@ -1,0 +1,11 @@
+{
+  "id": "the_pig",
+  "name": "The Pig",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "RAINBOW",
+  "attack": 1,
+  "health": 4,
+  "description": "FLOOP >>> Flip target Cornfield Landscape in this Lane face down.",
+  "components": []
+}

@@ -1,0 +1,11 @@
+{
+  "id": "travelin_farmer",
+  "name": "Travelin' Farmer",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "CORNFIELD",
+  "attack": 2,
+  "health": 12,
+  "description": "When Travelin' Farmer leaves play, deal 1 damage to your opponent for each card in their hand.",
+  "components": []
+}

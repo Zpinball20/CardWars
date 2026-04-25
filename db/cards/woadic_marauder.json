@@ -1,0 +1,11 @@
+{
+  "id": "woadic_marauder",
+  "name": "Woadic Marauder",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "BLUE_PLAINS",
+  "attack": 3,
+  "health": 9,
+  "description": "When Woadic Marauder changes Lanes during a turn, draw a card.",
+  "components": []
+}

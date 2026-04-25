@@ -1,0 +1,13 @@
+{
+  "id": "cool_dog",
+  "name": "Cool Dog",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "BLUE_PLAINS",
+  "attack": 2,
+  "health": 7,
+  "description": "Your Creatures on adjacent Lanes may not be attacked.",
+  "components": [
+    "block_adjacent_component"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "woad_blood",
+  "name": "Woad Blood",
+  "cost": 0,
+  "type": "SPELL",
+  "landscape": "RAINBOW",
+  "attack": 0,
+  "health": 0,
+  "description": "Each Creature that changed Lanes this turn has +2 ATK.",
+  "components": []
+}

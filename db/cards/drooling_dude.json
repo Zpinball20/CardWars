@@ -1,0 +1,11 @@
+{
+  "id": "drooling_dude",
+  "name": "Drooling Dude",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "RAINBOW",
+  "attack": 3,
+  "health": 9,
+  "description": "",
+  "components": []
+}

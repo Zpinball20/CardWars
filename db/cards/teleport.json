@@ -1,0 +1,11 @@
+{
+  "id": "teleport",
+  "name": "Teleport",
+  "cost": 0,
+  "type": "SPELL",
+  "landscape": "RAINBOW",
+  "attack": 0,
+  "health": 0,
+  "description": "Move one of your Creatures to one of your empty Landscapes.",
+  "components": []
+}

@@ -1,0 +1,11 @@
+{
+  "id": "reclaim_landscape",
+  "name": "Reclaim Landscape",
+  "cost": 0,
+  "type": "SPELL",
+  "landscape": "RAINBOW",
+  "attack": 0,
+  "health": 0,
+  "description": "You may flip one of your Landscapes face up, and you may move one of your Buildings to any of your Lanes without one.",
+  "components": []
+}

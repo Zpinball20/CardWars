@@ -1,0 +1,11 @@
+{
+  "id": "celestial_castle",
+  "name": "Celestial Castle",
+  "cost": 1,
+  "type": "BUILDING",
+  "landscape": "RAINBOW",
+  "attack": 0,
+  "health": 0,
+  "description": "Your Creature in this Lane has +3 DEF.",
+  "components": []
+}

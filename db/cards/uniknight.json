@@ -1,0 +1,11 @@
+{
+  "id": "uniknight",
+  "name": "Uni-Knight",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "BLUE_PLAINS",
+  "attack": 3,
+  "health": 4,
+  "description": "Pay 1 action >>> Target Creature in this Lane has -10 ATK this turn.",
+  "components": []
+}

@@ -1,0 +1,11 @@
+{
+  "id": "phyllis",
+  "name": "Phyllis",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "RAINBOW",
+  "attack": 2,
+  "health": 7,
+  "description": "",
+  "components": []
+}

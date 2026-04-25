@@ -1,0 +1,11 @@
+{
+  "id": "field_stalker",
+  "name": "Field Stalker",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "CORNFIELD",
+  "attack": 1,
+  "health": 10,
+  "description": "At the start of your turn, each player draws a card.",
+  "components": []
+}
