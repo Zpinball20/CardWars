@@ -1,0 +1,17 @@
+{
+  "id": "psionic_architect",
+  "name": "Psionic Architect",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "BLUE_PLAINS",
+  "attack": 2,
+  "health": 6,
+  "description": "When Psionic Architect enters play, you may ready one of your Flooped Creatures.",
+  "components": [
+    "enter_play_trigger_component",
+    {
+      "type": "enter_play_handler_component",
+      "handler": "ready_flooped"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "archer_dan",
+  "name": "Archer Dan",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "CORNFIELD",
+  "attack": 2,
+  "health": 6,
+  "description": "FLOOP >>> Destroy target Building in Archer Dan's Lane.",
+  "components": [
+    "floop_component",
+    {
+      "type": "floop_handler_component",
+      "handler": "destroy_building"
+    }
+  ]
+}

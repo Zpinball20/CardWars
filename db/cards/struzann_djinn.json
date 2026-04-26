@@ -1,0 +1,11 @@
+{
+  "id": "struzann_djinn",
+  "name": "Struzann Djinn",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "BLUE_PLAINS",
+  "attack": 1,
+  "health": 11,
+  "description": "+2 ATK for each of your Flooped Creatures.",
+  "components": []
+}

@@ -1,5 +1,4 @@
 import { Card } from "./card";
-import { Landscape } from "./landscapes";
 
 export enum ActionType {
   PLAY_CARD = "PLAY_CARD",

@@ -1,0 +1,11 @@
+{
+  "id": "xlarge_spirit_soldier",
+  "name": "X-Large Spirit Soldier",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "BLUE_PLAINS",
+  "attack": 1,
+  "health": 9,
+  "description": "Each adjacent Creature has +1 ATK.",
+  "components": []
+}

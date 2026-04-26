@@ -1,0 +1,17 @@
+{
+  "id": "embarrassing_bard",
+  "name": "Embarrassing Bard",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "BLUE_PLAINS",
+  "attack": 1,
+  "health": 5,
+  "description": "FLOOP >>> Draw a card for each of your Flooped Creatures (including this one).",
+  "components": [
+    "floop_component",
+    {
+      "type": "floop_handler_component",
+      "handler": "draw_per_flooped"
+    }
+  ]
+}

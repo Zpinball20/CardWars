@@ -1,0 +1,11 @@
+{
+  "id": "corn_ronin",
+  "name": "Corn Ronin",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "CORNFIELD",
+  "attack": 1,
+  "health": 6,
+  "description": "+1 ATK for each adjacent Cornfield Landscape.",
+  "components": []
+}

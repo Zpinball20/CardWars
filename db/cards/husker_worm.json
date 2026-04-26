@@ -1,0 +1,17 @@
+{
+  "id": "husker_worm",
+  "name": "Husker Worm",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "CORNFIELD",
+  "attack": 5,
+  "health": 4,
+  "description": "When Husker Worm enters play, flip one of your Cornfield Landscapes face down.",
+  "components": [
+    "enter_play_trigger_component",
+    {
+      "type": "enter_play_handler_component",
+      "handler": "flip_facedown"
+    }
+  ]
+}

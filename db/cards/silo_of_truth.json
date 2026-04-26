@@ -1,0 +1,13 @@
+{
+  "id": "silo_of_truth",
+  "name": "Silo of Truth",
+  "cost": 1,
+  "type": "BUILDING",
+  "landscape": "CORNFIELD",
+  "attack": 0,
+  "health": 0,
+  "description": "Pay 2 Actions >>> Steal a random card from your opponent's hand and play it at no cost.",
+  "components": [
+    "building_component"
+  ]
+}

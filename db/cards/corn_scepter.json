@@ -1,0 +1,13 @@
+{
+  "id": "corn_scepter",
+  "name": "Corn Scepter",
+  "cost": 1,
+  "type": "SPELL",
+  "landscape": "RAINBOW",
+  "attack": 0,
+  "health": 0,
+  "description": "Deal 1 damage to target Creature for each Cornfield Landscape you control.",
+  "components": [
+    "spell_component"
+  ]
+}

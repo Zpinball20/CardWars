@@ -1,0 +1,17 @@
+{
+  "id": "legion_of_earlings",
+  "name": "Legion of Earlings",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "CORNFIELD",
+  "attack": 2,
+  "health": 8,
+  "description": "When Legion of Earlings enters play, you may return target Creature in this Lane to its owner's hand.",
+  "components": [
+    "enter_play_trigger_component",
+    {
+      "type": "enter_play_handler_component",
+      "handler": "return_creature"
+    }
+  ]
+}

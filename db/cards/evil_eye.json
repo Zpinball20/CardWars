@@ -1,0 +1,11 @@
+{
+  "id": "evil_eye",
+  "name": "Evil Eye",
+  "cost": 0,
+  "type": "CREATURE",
+  "landscape": "RAINBOW",
+  "attack": 1,
+  "health": 5,
+  "description": "",
+  "components": []
+}

@@ -1,0 +1,11 @@
+{
+  "id": "nice_ice_baby",
+  "name": "Nice Ice Baby",
+  "cost": 0,
+  "type": "CREATURE",
+  "landscape": "RAINBOW",
+  "attack": 1,
+  "health": 2,
+  "description": "+3 ATK while your opponent does not control a Creature in this Lane.",
+  "components": []
+}

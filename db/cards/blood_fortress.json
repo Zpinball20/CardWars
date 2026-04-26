@@ -1,0 +1,18 @@
+{
+  "id": "blood_fortress",
+  "name": "Blood Fortress",
+  "cost": 1,
+  "type": "BUILDING",
+  "landscape": "RAINBOW",
+  "attack": 0,
+  "health": 0,
+  "description": "Your Creature in this Lane has +1 ATK.",
+  "components": [
+    "building_component",
+    {
+      "type": "lane_buff_component",
+      "attack": 1,
+      "defense": 0
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "big_foot",
+  "name": "Big Foot",
+  "cost": 0,
+  "type": "CREATURE",
+  "landscape": "RAINBOW",
+  "attack": 1,
+  "health": 4,
+  "description": "FLOOP >>> Flip target facedown Landscape you control face up.",
+  "components": [
+    "floop_component",
+    {
+      "type": "floop_handler_component",
+      "handler": "flip_facedown"
+    }
+  ]
+}

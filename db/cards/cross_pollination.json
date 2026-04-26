@@ -1,0 +1,13 @@
+{
+  "id": "cross_pollination",
+  "name": "Cross Pollination",
+  "cost": 2,
+  "type": "SPELL",
+  "landscape": "RAINBOW",
+  "attack": 0,
+  "health": 0,
+  "description": "Each of your Cornfield Creatures has +1 ATK this turn for each different Landscape type you control.",
+  "components": [
+    "spell_component"
+  ]
+}

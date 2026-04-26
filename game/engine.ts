@@ -1,8 +1,10 @@
 import { GameState, turnPhase } from "./state";
 import { Action, ActionType } from "./actions";
-import { CardType, Card } from "./card";
+import { Card } from "./card";
 import { Player } from "./player";
-import { Landscape } from "./landscapes";
+import { GameEvent, eventBus } from "../ecs/events";
+import { HeroAbilitySystem, EnterPlaySystem } from "../ecs/systems";
+import { CardFactory } from "./factory";
 
 export function addPlayer(state: GameState, player: Player): GameState {
   state.players.push(player);
@@ -42,6 +44,10 @@ function endStartOfTurn(state: GameState, player: number): GameState{
   if (state.turnPhase !== turnPhase.TURN_START) throw new Error("Wrong phase");
 
   state.turnPhase = turnPhase.MAIN_PHASE
+
+  // Trigger turn start event for ECS
+  eventBus.publish(GameEvent.TURN_START, { playerId: player, turn: state.turn });
+
   return state
 }
 
@@ -80,7 +86,10 @@ function endTurn(state: GameState, player: number): GameState {
   state.currentPlayer = (state.currentPlayer + 1) % state.players.length;
   state.turn += 1;
 
-  state.turnPhase = turnPhase.TURN_START
+  state.turnPhase = turnPhase.TURN_START;
+
+  // Trigger ECS hero abilities
+  new HeroAbilitySystem(state.world).update();
 
   for (const landscape of state.players[state.currentPlayer].landscapes) {
     const card = landscape.card[0];
@@ -111,28 +120,26 @@ function playCard(state: GameState, player: number, card: Card, landscape: numbe
     if(landscape < 0 || landscape > 3){
       throw new Error("Landscape does not exist!")
     }
-    
+
     currPlayer.landscapes[landscape].card[0] = selectedCard
-    
+
     //remove card from hand after playing 
     currPlayer.hand.splice(index, 1);
 
-    //TODO Card Logic
-    if(card.type == CardType.CREATURE){
-      //logic
-    }
-    else if(card.type == CardType.SPELL)
-    {
-      //logic
-    }
-    else if(card.type == CardType.BUILDING)
-    {
-      //logic
-    }
-    else
-    {
-      throw new Error("Card type is invalid")
-    }
+    // Also create in ECS
+    const factory = new CardFactory(state.world);
+    const entity = factory.createFromJSON(card.id, player, landscape);
+
+    // Trigger card played event
+    eventBus.publish(GameEvent.CARD_PLAYED, {
+      entity,
+      playerId: player,
+      laneIndex: landscape,
+      cardId: card.id
+    });
+
+    // Handle enter play triggers
+    new EnterPlaySystem(state.world).handle(entity);
 
     return state;
 }
@@ -165,7 +172,7 @@ function attackLane(state: GameState, player: number, lane: number): GameState {
   if (attacker.health! <= 0){
     currPlayer.landscapes[lane].card.splice(0, 1);
   }
-  
+
   if (defender && defender.health! <= 0) {
     opponent.landscapes[opposingLane].card.splice(0, 1);
   }

@@ -1,0 +1,11 @@
+{
+  "id": "husker_knight",
+  "name": "Husker Knight",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "CORNFIELD",
+  "attack": 0,
+  "health": 0,
+  "description": "+1 ATK and +2 DEF for each Cornfield Landscape you control.",
+  "components": []
+}

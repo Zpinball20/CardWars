@@ -1,0 +1,17 @@
+{
+  "id": "dragon_claw",
+  "name": "Dragon Claw",
+  "cost": 1,
+  "type": "CREATURE",
+  "landscape": "BLUE_PLAINS",
+  "attack": 1,
+  "health": 8,
+  "description": "FLOOP >>> Move one of your Creatures to an empty Lane.",
+  "components": [
+    "floop_component",
+    {
+      "type": "floop_handler_component",
+      "handler": "move_creature"
+    }
+  ]
+}

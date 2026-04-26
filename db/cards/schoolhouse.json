@@ -1,0 +1,18 @@
+{
+  "id": "schoolhouse",
+  "name": "Schoolhouse",
+  "cost": 1,
+  "type": "BUILDING",
+  "landscape": "BLUE_PLAINS",
+  "attack": 0,
+  "health": 0,
+  "description": "FLOOP >>> Your Creature in this Lane loses all abilities and gains the Floop ability of a random Creature (with a Floop ability) in your discard pile until end of turn.",
+  "components": [
+    "building_component",
+    "floop_component",
+    {
+      "type": "floop_handler_component",
+      "handler": "copy_floop"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "woad_talisman",
+  "name": "Woad Talisman",
+  "cost": 0,
+  "type": "SPELL",
+  "landscape": "RAINBOW",
+  "attack": 0,
+  "health": 0,
+  "description": "Target Blue Plains Creature you control has +2 ATK this turn.",
+  "components": [
+    "spell_component"
+  ]
+}

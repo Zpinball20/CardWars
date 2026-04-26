@@ -1,0 +1,17 @@
+{
+  "id": "field_reaper",
+  "name": "Field Reaper",
+  "cost": 2,
+  "type": "CREATURE",
+  "landscape": "CORNFIELD",
+  "attack": 1,
+  "health": 4,
+  "description": "To play this card, you must discard a card. When Field Reaper enters play, move target Creature in this Lane to an adjacent empty Lane you control.",
+  "components": [
+    "enter_play_trigger_component",
+    {
+      "type": "enter_play_handler_component",
+      "handler": "move_creature"
+    }
+  ]
+}
