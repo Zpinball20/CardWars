@@ -266,7 +266,7 @@ function App() {
       
       <div className="hero-area">
         <div className="hero">
-          <img src={getHeroImage('jake')} alt="Enemy" style={{ width: 80, height: 80, borderRadius: 8 }} />
+          <img src={getHeroImage('jake')} alt="Enemy" style={{ width: 220, height: 300, borderRadius: 8 }} />
           <div className="hero-health">P2: {opponent.health}</div>
         </div>
         <div>
@@ -274,14 +274,14 @@ function App() {
           <p>{game.turnPhase} - Player {game.currentPlayer + 1}'s turn</p>
         </div>
         <div className="hero">
-          <img src={getHeroImage('finn')} alt="You" style={{ width: 80, height: 80, borderRadius: 8 }} />
+          <img src={getHeroImage('finn')} alt="You" style={{ width: 220, height: 300, borderRadius: 8 }} />
           <div className="hero-health">P1: {currentPlayer.health}</div>
         </div>
       </div>
 
       <div className="game-board">
         <div className={`player-area ${game.currentPlayer === 1 ? 'current' : ''}`}>
-          <h3>Opponent Hand ({opponent.hand.length} cards)</h3>
+          <h3>Opponent Hand ({opponent.hand.length} cards) </h3>
           <div className="hand">
             {opponent.hand.map((card, i) => (
               <div key={i} className="card">
@@ -297,12 +297,12 @@ function App() {
             {opponent.landscapes.map((lane) => (
               <div 
                 key={lane.laneIndex} 
-                className={`lane ${lane.flipped ? 'flipped' : ''} ${game.turnPhase === 'ATTACK_PHASE' && lane.card && !lane.card.exhausted ? 'attackable' : ''}`}
+                className={`lane ${lane.flipped ? 'flipped' : ''} ${game.turnPhase === 'ATTACK_PHASE' && selectedAttacker !== null ? 'attackable' : ''}`}
                 style={{ backgroundImage: `url(${getLandscapeImage(lane.landscape, lane.laneIndex)})`, backgroundSize: 'cover' }}
                 onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  if (game.turnPhase === 'ATTACK_PHASE' && lane.card && !lane.card.exhausted) {
+                  if (game.turnPhase === 'ATTACK_PHASE' && selectedAttacker !== null) {
                     attackLane(lane.laneIndex)
                   }
                 }}

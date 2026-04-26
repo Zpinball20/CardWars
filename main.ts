@@ -184,7 +184,7 @@ app.post('/api/games/:gameId/end-start', (req, res) => {
 
 app.post('/api/games/:gameId/attack', (req, res) => {
   const { gameId } = req.params;
-  const { player, landscape } = req.body;
+  const { player, attackerLane, targetLane } = req.body;
   
   const game = games.get(gameId);
   if (!game) {
@@ -195,8 +195,8 @@ app.post('/api/games/:gameId/attack', (req, res) => {
     if (game.turnPhase === 'MAIN_PHASE') {
       applyAction(game, { type: ActionType.START_ATTACK, player });
     }
-    if (landscape !== undefined) {
-      applyAction(game, { type: ActionType.ATTACK_LANE, player, landscape });
+    if (targetLane !== undefined) {
+      applyAction(game, { type: ActionType.ATTACK_LANE, player, landscape: targetLane });
     }
     res.json(serializeGame(game));
   } catch (e: any) {

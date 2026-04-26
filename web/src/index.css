@@ -176,6 +176,7 @@ body {
 
 .lane .card.exhausted {
   opacity: 0.6;
+  transform: rotate(90deg);
 }
 
 .landscape-label {
