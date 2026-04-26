@@ -2,7 +2,7 @@ import { GameState, turnPhase } from "./state";
 import { Action, ActionType } from "./actions";
 import { CardType, Card } from "./card";
 import { Player } from "./player";
-import { truncate } from "fs";
+import { Landscape } from "./landscapes";
 
 export function addPlayer(state: GameState, player: Player): GameState {
   state.players.push(player);
@@ -82,6 +82,13 @@ function endTurn(state: GameState, player: number): GameState {
 
   state.turnPhase = turnPhase.TURN_START
 
+  for (const landscape of state.players[state.currentPlayer].landscapes) {
+    const card = landscape.card[0];
+    if (card) {
+      card.exhausted = false;
+    }
+  }
+  
   return state;
 }
 
