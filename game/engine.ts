@@ -91,6 +91,13 @@ function endTurn(state: GameState, player: number): GameState {
   // Trigger ECS hero abilities
   new HeroAbilitySystem(state.world).update();
 
+  for (const landscape of state.players[state.currentPlayer].landscapes) {
+    const card = landscape.card[0];
+    if (card) {
+      card.exhausted = false;
+    }
+  }
+  
   return state;
 }
 
