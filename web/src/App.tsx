@@ -8,6 +8,7 @@ interface Card {
   attack: number
   health: number
   description?: string
+  hasTurnStart?: boolean
 }
 
 interface Landscape {
@@ -47,9 +48,10 @@ function getHeroImage(heroId: string): string {
   return `/textures/heroes/${heroId}.png`
 }
 
-function getLandscapeImage(landscape: string): string {
-  const name = landscape.toLowerCase().replace(/ /g, '') + '.png'
-  return `/textures/landscapes/${name}`
+function getLandscapeImage(landscape: string, laneIndex: number): string {
+  const base = landscape.toLowerCase().replace(/ /g, '')
+  const num = (laneIndex % 4) + 1
+  return `/textures/landscapes/${base}${num}.png`
 }
 
 function App() {
@@ -58,10 +60,13 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedCard, setSelectedCard] = useState<number | null>(null)
+  const [selectedAttacker, setSelectedAttacker] = useState<number | null>(null)
 
   const startGame = async () => {
     setLoading(true)
     setError(null)
+    setGame(null)
+    setGameId(null)
     try {
       const res = await fetch('/api/games', {
         method: 'POST',
@@ -69,6 +74,7 @@ function App() {
         body: JSON.stringify({ player1Hero: 'finn', player2Hero: 'jake' }),
       })
       const data = await res.json()
+      console.log('Game created:', data.gameId, 'Hand:', data.game.players[0].hand.map((c: Card) => c.id))
       setGameId(data.gameId)
       setGame(data.game)
     } catch (e: any) {
@@ -81,34 +87,53 @@ function App() {
     if (!gameId) return
     try {
       const res = await fetch(`/api/games/${gameId}`)
+      if (!res.ok) {
+        console.log('Game not found, clearing...')
+        setGame(null)
+        setGameId(null)
+        return
+      }
       const data = await res.json()
+      if (!data.players || !data.players[0]) {
+        console.log('Invalid game data', data)
+        return
+      }
       setGame(data)
     } catch (e: any) {
-      setError(e.message)
+      console.error('Refresh error:', e)
     }
   }
 
   const playCard = async (cardIndex: number, landscape: number) => {
-    if (!gameId) return
+    if (!gameId || !game?.players?.[game.currentPlayer]?.hand?.[cardIndex]) return
+    const cardId = game.players[game.currentPlayer].hand[cardIndex].id
+    console.log('Click playCard:', { cardIndex, landscape, cardId, currentPlayer: game.currentPlayer })
     setLoading(true)
-    setSelectedCard(null)
     try {
       const res = await fetch(`/api/games/${gameId}/play-card`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           player: game!.currentPlayer,
-          cardId: game!.players[game!.currentPlayer].hand[cardIndex].id,
+          cardId,
           landscape,
         }),
       })
-      const data = await res.json()
-      if (data.error) {
-        setError(data.error)
+      const text = await res.text()
+      console.log('Play card response:', res.status, text)
+      if (!res.ok) {
+        setError(`Error ${res.status}: ${text}`)
       } else {
-        setGame(data)
+        const data = JSON.parse(text)
+        if (data.error) {
+          setError(data.error)
+        } else {
+          setGame(data)
+          setSelectedCard(null)
+        }
       }
     } catch (e: any) {
+      console.error('Play card error:', e)
       setError(e.message)
     }
     setLoading(false)
@@ -125,6 +150,53 @@ function App() {
       })
       const data = await res.json()
       setGame(data)
+    } catch (e: any) {
+      setError(e.message)
+    }
+    setLoading(false)
+  }
+
+  const startAttack = async () => {
+    if (!gameId || !game) return
+    console.log('startAttack called:', { currentPlayer: game.currentPlayer, turnPhase: game.turnPhase })
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/games/${gameId}/attack`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player: game.currentPlayer }),
+      })
+      const text = await res.text()
+      console.log('StartAttack response:', res.status, text)
+      if (!res.ok) {
+        setError(`Error ${res.status}: ${text}`)
+      } else {
+        setGame(JSON.parse(text))
+      }
+    } catch (e: any) {
+      setError(e.message)
+    }
+    setLoading(false)
+  }
+
+  const attackLane = async (laneIndex: number) => {
+    if (!gameId || !game || selectedAttacker === null) return
+    console.log('attackLane called:', { laneIndex, attackerLane: selectedAttacker, currentPlayer: game.currentPlayer, turnPhase: game.turnPhase })
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/games/${gameId}/attack`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player: game.currentPlayer, attackerLane: selectedAttacker, targetLane: laneIndex }),
+      })
+      const text = await res.text()
+      console.log('Attack response:', res.status, text)
+      if (!res.ok) {
+        setError(`Error ${res.status}: ${text}`)
+      } else {
+        setGame(JSON.parse(text))
+        setSelectedAttacker(null)
+      }
     } catch (e: any) {
       setError(e.message)
     }
@@ -149,11 +221,17 @@ function App() {
   }
 
   useEffect(() => {
-    if (game) {
+    if (game && game.turnPhase === 'TURN_START') {
+      const currentHand = game.players[game.currentPlayer].hand
+      const hasTurnStartCard = currentHand.some((c: Card) => c.hasTurnStart)
+      if (!hasTurnStartCard) {
+        endStart()
+      }
+    } else if (game) {
       const interval = setInterval(refreshGame, 2000)
       return () => clearInterval(interval)
     }
-  }, [gameId])
+  }, [gameId, game?.turnPhase])
 
   if (!game) {
     return (
@@ -164,6 +242,16 @@ function App() {
           <button className="primary" onClick={startGame} disabled={loading}>
             {loading ? 'Loading...' : 'Start Game'}
           </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!game || !game.players || !game.players[0]) {
+    return (
+      <div className="app">
+        <div className="start-screen">
+          <p>Loading game...</p>
         </div>
       </div>
     )
@@ -209,8 +297,15 @@ function App() {
             {opponent.landscapes.map((lane) => (
               <div 
                 key={lane.laneIndex} 
-                className={`lane ${lane.flipped ? 'flipped' : ''}`}
-                style={{ backgroundImage: `url(${getLandscapeImage(lane.landscape)})`, backgroundSize: 'cover' }}
+                className={`lane ${lane.flipped ? 'flipped' : ''} ${game.turnPhase === 'ATTACK_PHASE' && lane.card && !lane.card.exhausted ? 'attackable' : ''}`}
+                style={{ backgroundImage: `url(${getLandscapeImage(lane.landscape, lane.laneIndex)})`, backgroundSize: 'cover' }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  if (game.turnPhase === 'ATTACK_PHASE' && lane.card && !lane.card.exhausted) {
+                    attackLane(lane.laneIndex)
+                  }
+                }}
               >
                 {lane.card && (
                   <div className={`card ${lane.card.exhausted ? 'exhausted' : ''}`}>
@@ -232,12 +327,13 @@ function App() {
           <div className="hand">
             {currentPlayer.hand.map((card, i) => (
               <div
-                key={card.id}
-                className={`card ${selectedCard === i ? 'selected' : ''}`}
+                key={`${card.id}-${i}`}
+                className={`card ${selectedCard === i ? 'selected' : ''} ${card.hasTurnStart ? 'has-turn-start' : ''}`}
                 onClick={() => setSelectedCard(selectedCard === i ? null : i)}
                 style={{ backgroundImage: `url(${getCardImage(card.id)})`, backgroundSize: 'cover' }}
               >
                 <div className="card-cost">{card.cost}</div>
+                {card.hasTurnStart && <div className="turn-start-badge">⚡</div>}
                 <div className="card-stats">
                   <span className="card-atk">{card.attack}</span>
                   <span className="card-hp">{card.health}</span>
@@ -261,12 +357,19 @@ function App() {
             {currentPlayer.landscapes.map((lane) => (
               <div 
                 key={lane.laneIndex} 
-                className={`lane ${lane.flipped ? 'flipped' : ''}`}
-                style={{ backgroundImage: `url(${getLandscapeImage(lane.landscape)})`, backgroundSize: 'cover' }}
+                className={`lane ${lane.flipped ? 'flipped' : ''} ${game.turnPhase === 'ATTACK_PHASE' && lane.card && !lane.card.exhausted ? 'attackable' : ''} ${selectedAttacker === lane.laneIndex ? 'selected' : ''}`}
+                style={{ backgroundImage: `url(${getLandscapeImage(lane.landscape, lane.laneIndex)})`, backgroundSize: 'cover' }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  if (game.turnPhase === 'ATTACK_PHASE' && lane.card && !lane.card.exhausted) {
+                    setSelectedAttacker(selectedAttacker === lane.laneIndex ? null : lane.laneIndex)
+                  }
+                }}
               >
                 {lane.card && (
                   <div 
-                    className={`card ${lane.card.exhausted ? 'exhausted' : ''}`}
+                    className={`card in-lane ${lane.card.exhausted ? 'exhausted' : ''}`}
                     style={{ backgroundImage: `url(${getCardImage(lane.card.id)})`, backgroundSize: 'cover' }}
                   >
                     <div className="card-stats">
@@ -283,12 +386,22 @@ function App() {
       </div>
 
       <div className="controls">
-        {game.turnPhase === 'START' && (
+        {game.turnPhase === 'TURN_START' && (
           <button className="primary" onClick={endStart} disabled={loading}>
             End Start Phase
           </button>
         )}
-        {game.turnPhase === 'PLAY' && (
+        {game.turnPhase === 'MAIN_PHASE' && (
+          <>
+            <button className="primary" onClick={startAttack} disabled={loading}>
+              Start Attack
+            </button>
+            <button onClick={endTurn} disabled={loading}>
+              End Turn
+            </button>
+          </>
+        )}
+        {game.turnPhase === 'ATTACK_PHASE' && (
           <button className="primary" onClick={endTurn} disabled={loading}>
             End Turn
           </button>

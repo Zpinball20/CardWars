@@ -6,6 +6,8 @@ import { ActionType } from './game/actions';
 import { Player } from './game/player';
 import { getHero } from './db/heroes';
 import { Card } from './game/card';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const app = express();
 app.use(cors());
@@ -23,6 +25,15 @@ function shuffle<T>(array: T[]): T[] {
   return arr;
 }
 
+function drawCards(player: Player, count: number) {
+  for (let i = 0; i < count; i++) {
+    if (player.deck.length > 0) {
+      const card = player.deck.pop()!;
+      player.hand.push(card);
+    }
+  }
+}
+
 function createGame(player1Hero: string, player2Hero: string): string {
   const gameId = `game_${gameCounter++}`;
   const game = new GameState();
@@ -36,8 +47,8 @@ function createGame(player1Hero: string, player2Hero: string): string {
   p1.setHero(hero1);
   p2.setHero(hero2);
   
-  p1.deck = shuffle(hero1.deck);
-  p2.deck = shuffle(hero2.deck);
+  p1.deck = shuffle(hero1.deck || []);
+  p2.deck = shuffle(hero2.deck || []);
   
   drawCards(p1, 5);
   drawCards(p2, 5);
@@ -49,6 +60,13 @@ function createGame(player1Hero: string, player2Hero: string): string {
   return gameId;
 }
 
+function getCardComponents(cardId: string): string[] {
+  const jsonPath = path.join(process.cwd(), 'db', 'cards', `${cardId}.json`);
+  if (!fs.existsSync(jsonPath)) return [];
+  const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+  return data.components || [];
+}
+
 function serializeGame(game: GameState) {
   return {
     turn: game.turn,
@@ -58,15 +76,19 @@ function serializeGame(game: GameState) {
     players: game.players.map((p, i) => ({
       id: i,
       health: p.health,
-      hand: p.hand.map((c: Card) => ({
-        id: c.id,
-        name: c.name,
-        cost: c.cost,
-        type: c.type,
-        attack: c.attack,
-        health: c.health,
-        description: c.description,
-      })),
+      hand: p.hand.map((c: Card) => {
+        const components = getCardComponents(c.id);
+        return {
+          id: c.id,
+          name: c.name,
+          cost: c.cost,
+          type: c.type,
+          attack: c.attack,
+          health: c.health,
+          description: c.description,
+          hasTurnStart: components.includes('turn_start_trigger_component'),
+        };
+      }),
       landscapes: p.landscapes.map((l, laneIndex) => ({
         laneIndex,
         card: l.card[0] ? {
@@ -170,7 +192,9 @@ app.post('/api/games/:gameId/attack', (req, res) => {
   }
   
   try {
-    applyAction(game, { type: ActionType.START_ATTACK, player });
+    if (game.turnPhase === 'MAIN_PHASE') {
+      applyAction(game, { type: ActionType.START_ATTACK, player });
+    }
     if (landscape !== undefined) {
       applyAction(game, { type: ActionType.ATTACK_LANE, player, landscape });
     }

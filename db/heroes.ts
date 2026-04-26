@@ -13,7 +13,7 @@ function loadHeroes(): Hero[] {
   return files.map(file => {
     const data = JSON.parse(fs.readFileSync(path.join(heroesDir, file), "utf-8"));
     const landscapes = (data.landscapes || []).map((l: string) => LandscapeType[l as keyof typeof LandscapeType] || LandscapeType.RAINBOW);
-    const hero = new Hero(data.id, data.name, landscapes, data.description || "");
+    const hero = new Hero(data.id, data.name, landscapes, data.description || "", []);
     
     if (data.deck) {
       for (const cardId of data.deck) {
