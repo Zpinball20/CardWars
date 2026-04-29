@@ -5,6 +5,7 @@ import { Player } from "./player";
 import { GameEvent, eventBus } from "../ecs/events";
 import { HeroAbilitySystem, EnterPlaySystem } from "../ecs/systems";
 import { CardFactory } from "./factory";
+import { Landscape } from "./landscapes";
 
 export function addPlayer(state: GameState, player: Player): GameState {
   state.players.push(player);
